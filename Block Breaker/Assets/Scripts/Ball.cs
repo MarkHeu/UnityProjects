@@ -6,6 +6,7 @@ public class Ball : MonoBehaviour {
     private Paddle paddle;
     private Vector3 paddletoBallVector;
     private Rigidbody2D rb;
+    private AudioSource auso; 
     private bool hasStarted = false; 
     // Use this for initialization
 	void Start ()
@@ -13,6 +14,7 @@ public class Ball : MonoBehaviour {
         rb = GetComponent<Rigidbody2D>();
         paddle = GameObject.FindObjectOfType<Paddle>();
         paddletoBallVector = this.transform.position - paddle.transform.position;
+
     }
 	
 	// Update is called once per frame
@@ -28,4 +30,14 @@ public class Ball : MonoBehaviour {
             }
         }
 	}
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Vector2 tweak = new Vector2(Random.Range(0f, 0.2f), Random.Range(0f, 0.2f));
+        if (hasStarted)
+        {
+            auso = GetComponent<AudioSource>();
+            auso.Play();
+            rb.velocity = rb.velocity + tweak; 
+        }
+    }
 }
